@@ -179,6 +179,11 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu') || startsWith(matrix.os, 'macos')
       - run: ${{steps.download-binary.outputs.download-path}}/Debug/openblack -g ${{steps.download-test.outputs.download-path}}/mock -b Noop --num-frames-to-simulate 10 --log-file stdout --log-level all=debug
       - run: ${{steps.download-binary.outputs.download-path}}/Release/openblack -g ${{steps.download-test.outputs.download-path}}/mock -b Noop --num-frames-to-simulate 10 --log-file stdout --log-level all=debug
+      - name: Run in Direct3D11 mode (only mode that can run windowed on CI)
+        run: |
+          ${{steps.download-binary.outputs.download-path}}/Debug/openblack -g ${{steps.download-test.outputs.download-path}}/mock -b Direct3D11 --num-frames-to-simulate 10 --log-file stdout --log-level all=debug
+          ${{steps.download-binary.outputs.download-path}}/Release/openblack -g ${{steps.download-test.outputs.download-path}}/mock -b Direct3D11 --num-frames-to-simulate 10 --log-file stdout --log-level all=debug
+        if: startsWith(matrix.os, 'windows')
       - name: Install valgrind and libc6-dbg
         run: |
           sudo apt update -y
