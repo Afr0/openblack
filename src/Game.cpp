@@ -42,6 +42,7 @@
 #include "ECS/Map.h"
 #include "ECS/Registry.h"
 #include "ECS/Systems/CameraBookmarkSystemInterface.h"
+#include "ECS/Systems/CameraPathSystemInterface.h"
 #include "ECS/Systems/DynamicsSystemInterface.h"
 #include "ECS/Systems/LivingActionSystemInterface.h"
 #include "ECS/Systems/PathfindingSystemInterface.h"
@@ -365,6 +366,7 @@ bool Game::Update()
 			_eventManager->Create<SDL_Event>(e);
 		}
 	}
+	Locator::cameraPathSystem::value().Update(deltaTime);
 
 	if (!this->_config.running)
 	{
