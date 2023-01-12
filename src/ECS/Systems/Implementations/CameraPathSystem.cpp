@@ -126,10 +126,10 @@ void CameraPathSystem::Update(const std::chrono::microseconds& dt)
 	}
 
 	const auto& targetPosition = registry.Get<Transform>(_current).position;
+	const auto& node = registry.Get<CameraPathNode>(_current);
 	const auto& position = camera.GetPosition();
 	if (position == targetPosition && !_paused)
 	{
-		const auto& node = registry.Get<CameraPathNode>(_current);
 
 		_current = node.next;
 		if (_current == entt::null)
@@ -145,6 +145,10 @@ void CameraPathSystem::Update(const std::chrono::microseconds& dt)
 	auto dtc = dt.count() * 10;
 	_progress = glm::clamp(_progress + ms * dtc, .0f, 1.0f);
 	camera.SetPosition(glm::mix(position, targetPosition, _progress));
+	if (registry.Valid(node.lookAt))
+	{
+		camera.LookAt(registry.Get<Transform>(node.lookAt).position);
+	}
 }
 
 bool CameraPathSystem::IsPlaying()
