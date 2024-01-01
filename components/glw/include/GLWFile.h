@@ -8,6 +8,7 @@
  *******************************************************************************/
 
 #include <filesystem>
+#include <vector>
 
 namespace openblack::glw
 {
